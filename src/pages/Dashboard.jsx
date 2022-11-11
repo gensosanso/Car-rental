@@ -9,27 +9,27 @@ import RecommendCarCard from "../components/UI/RecommendCarCard";
 import recommendCarsData from "../assets/dummy-data/recommendCars";
 
 const carObj = {
-  title: "Total Cars",
+  title: "Nombre de biens",
   totalNumber: 750,
-  icon: "ri-police-car-line",
+  icon: "ri-building-4-line",
 };
 
 const tripObj = {
-  title: "Daily Trips",
+  title: "Deals réalisés par mois",
   totalNumber: 1697,
-  icon: "ri-steering-2-line",
+  icon: "ri-check-double-line",
 };
 
 const clientObj = {
-  title: "Clients Annually",
+  title: "Clients annuels",
   totalNumber: "85k",
   icon: "ri-user-line",
 };
 
 const distanceObj = {
-  title: "Kilometers Daily",
+  title: "Gestionnaires de patrimoine",
   totalNumber: 2167,
-  icon: "ri-timer-flash-line",
+  icon: "ri-user-2-line",
 };
 
 const Dashboard = () => {

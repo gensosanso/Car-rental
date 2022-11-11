@@ -1,24 +1,23 @@
-const navLinks = [
-  {
-    path: "/dashboard",
-    icon: "ri-apps-2-line",
-    display: "Dashboard",
-  },
-  {
-    path: "/bookings",
-    icon: "ri-taxi-line",
-    display: "Booking",
-  },
-  {
-    path: "/sell-car",
-    icon: "ri-shopping-bag-line",
-    display: "Sell Cars",
-  },
-  {
-    path: "/settings",
-    icon: "ri-settings-2-line",
-    display: "Settings",
-  },
+const navLinks = [{
+        path: "/dashboard",
+        icon: "ri-apps-2-line",
+        display: "Tableau de bord",
+    },
+    {
+        path: "/bookings",
+        icon: "ri-add-circle-line",
+        display: "Nouveau bien",
+    },
+    {
+        path: "/sell-car",
+        icon: "ri-building-4-line",
+        display: "Mes biens",
+    },
+    {
+        path: "/settings",
+        icon: "ri-settings-2-line",
+        display: "Paramètres",
+    },
 ];
 
 export default navLinks;
