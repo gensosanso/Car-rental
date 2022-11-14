@@ -1,10 +1,10 @@
-.sell__car {
+.mes-biens {
     margin-top: 100px;
     padding: 0px 30px;
     padding-bottom: 50px;
 }
 
-.sell__car-img {
+.mes-biens-img {
     padding: 20px;
     background: var(--primary-color);
     border-radius: 5px;
@@ -12,20 +12,27 @@
     cursor: pointer;
 }
 
-.sell__car-img img {
+.mes-biens-img img {
     object-fit: cover;
     width: 70%;
 }
 
-.sell__car-img h2 {
+.mes-biens-img h2 {
     color: var(--heading-color);
     text-align-last: left;
 }
 
-.sell__car-top {
+.mes-biens-top {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     column-gap: 2rem;
+}
+
+.mes-biens-header {
+    display: flex;
+    justify-content: flex-start;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
 }
 
 .tracking__history {
@@ -43,8 +50,7 @@
     margin-bottom: 30px;
 }
 
-.sell__car-title {
-    margin-bottom: 2rem;
+.mes-biens-title {
     color: #fff;
     font-weight: 500;
     font-size: 1.5rem;
@@ -53,7 +59,7 @@
 .offer__top {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: none;
     margin-top: 2rem;
 }
 
@@ -157,4 +163,18 @@
 
 .box__05 .spend__amount {
     color: #725cff;
+}
+
+.filter__widget-01 {
+    margin-inline: 20px;
+}
+
+.badge-results {
+    padding-inline: 10px;
+    padding-block: 5px;
+    background: var(--secondary-color);
+    border-radius: 40%;
+    color: white;
+    font-size: 1rem;
+    font-weight: 500;
 }

@@ -4,7 +4,7 @@
     padding-bottom: 50px;
 }
 
-.booking__title {
+.new-bien__title {
     font-size: 1.5rem;
     color: #fff;
     margin-bottom: 2rem;
@@ -87,7 +87,7 @@
     font-size: 1.1rem;
 }
 
-.booking__car-list {
+.new-bien__car-list {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     column-gap: 2rem;

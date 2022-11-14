@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 // import mesBiens from "../assets/images/mes-biens.png";
 import "../styles/mes-biens.css";
-import TrackingChart from "../charts/TrackingChart";
 import { capitalizeEveryWord } from "../utils/stringFormat";
 import BienDetails from "../components/UI/BienDetails";
 
@@ -17,38 +16,51 @@ const MesBiens = (props) => {
   const typesDeBiens = [...new Set(biens.map(b => b["typeofgood"]["name"] || "Autre"))];
 
   const [biensToDisplay, setBiensToDisplay] = useState(biens.sort((a, b) => getMarketPart(b, biens) - getMarketPart(a, biens)));
-  const [typeDeBiensToPrint, setTypeDeBiensToPrint] = useState("");
+  const [typeDeBiensToDisplay, setTypeDeBiensToDisplay] = useState("tous");
+  const [typeContratToDisplay, setTypeContratToDisplay] = useState("tous");
+
+  const displayBiens = (typeDeBien, typeDeContrat) => {
+    let btd = biens;
+    if(typeDeBien !== "tous") btd = btd.filter(b => b["typeofgood"]["name"] === typeDeBien);
+    if(typeDeContrat !== "tous") btd = btd.filter(b => b.vente === (typeDeContrat === "vente" ? 1 : 0));
+    setBiensToDisplay(btd);
+  }
 
   const handleTypeFilterChange = (e) => {
     const typeDeBien = e.target.value;
-    const filteredBiens = biens.filter(b => b["typeofgood"]["name"] === typeDeBien);
-    setBiensToDisplay(filteredBiens);
+    setTypeDeBiensToDisplay(typeDeBien);
+    displayBiens(typeDeBien, typeContratToDisplay);
+  }
+
+  const handleTypeContratChange = (e) => {
+    const typeContrat = e.target.value;
+    setTypeContratToDisplay(typeContrat);
+    displayBiens(typeDeBiensToDisplay, typeContrat);
   }
 
   return (
-    <div className="sell__car">
-      <div className="sell__car-wrapper">
-        <h2 className="sell__car-title">Mes biens</h2>
-        {/* <div className="sell__car-top">
-          <div className="sell__car-img">
-            <h2>2022 Mercedes Benz</h2>
-            <img src={mesBiens} alt="" />
-          </div>
-
-          <div className="tracking__history">
-            <h3>Tracking History</h3>
-            <TrackingChart />
-          </div>
-        </div> */}
-
+    <div className="mes-biens">
+      <div className="mes-biens-wrapper">
+        <div className="mes-biens-header">
+          <div className="mes-biens-title"> Mes biens </div> 
+          <div className="badge-results">{ biensToDisplay.length }</div>
+        </div>
+      </div>
         <div className="offer__wrapper">
           <div className="offer__top">
             <div className="filter__widget-01">
               <select onChange={handleTypeFilterChange}>
+                <option value="tous" selected>Tout type</option>
                 {
                   typesDeBiens.map(type => <option value={type}>{capitalizeEveryWord(type)}</option>)
                 }
-                <option value="autre">Autres</option>
+              </select>
+            </div>
+            <div className="filter__widget-01">
+              <select onChange={handleTypeContratChange}>
+                <option value="tous" selected>Tous</option>
+                <option value="location">À louer</option>
+                <option value="vente">À vendre</option>
               </select>
             </div>
           </div>
@@ -62,7 +74,6 @@ const MesBiens = (props) => {
           </div>
         </div>
       </div>
-    </div>
   );
 };
 

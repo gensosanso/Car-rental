@@ -8,7 +8,7 @@ const TopNav = () => {
   return (
     <div className="top__nav">
       <div className="top__nav-wrapper">
-        <div className="search__box">
+        <div className="">
           {/* <input type="text" placeholder="search or type" />
           <span>
             <i class="ri-search-line"></i>
