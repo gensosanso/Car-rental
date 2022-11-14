@@ -8,14 +8,16 @@ import RecommendCarCard from "../components/UI/RecommendCarCard";
 
 import recommendCarsData from "../assets/dummy-data/recommendCars";
 
+import tousLesBiens from "../assets/dummy-data/biens";
+
 const carObj = {
-  title: "Nombre de biens",
-  totalNumber: 750,
+  title: "Total biens",
+  totalNumber: tousLesBiens.length,
   icon: "ri-building-4-line",
 };
 
 const tripObj = {
-  title: "Deals réalisés par mois",
+  title: "Deals réalisés",
   totalNumber: 1697,
   icon: "ri-check-double-line",
 };
@@ -27,7 +29,7 @@ const clientObj = {
 };
 
 const distanceObj = {
-  title: "Gestionnaires de patrimoine",
+  title: "Gestionnaires",
   totalNumber: 2167,
   icon: "ri-user-2-line",
 };
@@ -45,12 +47,12 @@ const Dashboard = () => {
 
         <div className="statics">
           <div className="stats">
-            <h3 className="stats__title">Miles Statistics</h3>
+            <h3 className="stats__title">Statistiques locations</h3>
             <MileChart />
           </div>
 
           <div className="stats">
-            <h3 className="stats__title">Car Statistics</h3>
+            <h3 className="stats__title">Statistiques ventes</h3>
             <CarStatsChart />
           </div>
         </div>

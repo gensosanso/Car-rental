@@ -4,14 +4,14 @@ const navLinks = [{
         display: "Tableau de bord",
     },
     {
-        path: "/bookings",
-        icon: "ri-add-circle-line",
-        display: "Nouveau bien",
-    },
-    {
-        path: "/sell-car",
+        path: "/mes-biens",
         icon: "ri-building-4-line",
         display: "Mes biens",
+    },
+    {
+        path: "/new-bien",
+        icon: "ri-add-circle-line",
+        display: "Nouveau bien",
     },
     {
         path: "/settings",

@@ -1,14 +1,12 @@
 import React from "react";
-import "../styles/bookings.css";
+import "../styles/new-bien.css";
 
-import carData from "../assets/dummy-data/booking-cars.js";
-import CarItem from "../components/UI/CarItem";
 
-const Bookings = () => {
+const NewBien = () => {
   return (
-    <div className="bookings">
+    <div className="new-bien">
       <div className="booking__wrapper">
-        <h2 className="booking__title">Booking</h2>
+        <h2 className="booking__title">Enregistrer un nouveau bien</h2>
 
         <div className="filter__widget-wrapper">
           <div className="filter__widget-01">
@@ -28,14 +26,14 @@ const Bookings = () => {
           </div>
         </div>
 
-        <div className="booking__car-list">
+        {/* <div className="booking__car-list">
           {carData?.map((item) => (
             <CarItem item={item} key={item.id} />
           ))}
-        </div>
+        </div> */}
       </div>
     </div>
   );
 };
 
-export default Bookings;
+export default NewBien;
