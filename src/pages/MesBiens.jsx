@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-// import mesBiens from "../assets/images/mes-biens.png";
 import "../styles/mes-biens.css";
 import { capitalizeEveryWord } from "../utils/stringFormat";
 import BienDetails from "../components/UI/BienDetails";
@@ -50,7 +49,7 @@ const MesBiens = (props) => {
           <div className="offer__top">
             <div className="filter__widget-01">
               <select onChange={handleTypeFilterChange}>
-                <option value="tous" selected>Tout type</option>
+                <option value="tous">Tout type</option>
                 {
                   typesDeBiens.map(type => <option value={type}>{capitalizeEveryWord(type)}</option>)
                 }
@@ -58,7 +57,7 @@ const MesBiens = (props) => {
             </div>
             <div className="filter__widget-01">
               <select onChange={handleTypeContratChange}>
-                <option value="tous" selected>Tous</option>
+                <option value="tous">Tous</option>
                 <option value="location">À louer</option>
                 <option value="vente">À vendre</option>
               </select>

@@ -15,27 +15,26 @@ const usersBiens = biensArr.filter(b => b.user.id === LOGGED_USER_ID);
 
 
 const Router = () => {
-        return ( <
-                Routes >
-                <
-                Route path = "/"
-                element = { < Navigate to = "/dashboard"
-                    element = { < Dashboard biens = { biensArr } />} / > }
-                    /> <
-                    Route path = "/dashboard"
-                    element = { < Dashboard / > }
-                    /> <
-                    Route path = "/new-bien"
-                    element = { < NewBien / > }
+        return ( 
+            <Routes>
+                
+                <Route path = "/" 
+                       element = {<Navigate to = "/dashboard" 
+                                            element = { <Dashboard biens = { biensArr }/>} /> }/> 
+                    
+                    <Route path = "/dashboard"
+                    element = { < Dashboard /> }/> 
+
+                    <Route path = "/bookings" element = { <NewBien/>}
                     /> <
                     Route path = "/mes-biens"
                     element = { < MesBiens biens = { usersBiens }
                         />} / >
                         <
-                        Route path = "/settings"
-                        element = { < Settings / > }
-                        /> < /
-                        Routes >
+                        Route path = "/new-bien"
+                        element = { <NewBien biens = {biensArr}/>}
+                        />  
+            </Routes >
                     );
                 };
 

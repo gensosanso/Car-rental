@@ -63,7 +63,7 @@ export default function BienDetails ({bien, marketPart, key}) {
 
                 <h5 className="market__price"><b>{typeContrat}</b></h5>
                 <span className="arrow__key">
-                  <i class="ri-arrow-right-line"></i>
+                  <i className="ri-arrow-right-line"></i>
                 </span>
               </div>
 
@@ -85,7 +85,7 @@ export default function BienDetails ({bien, marketPart, key}) {
 
               <div className="box__03">
                 <span className="model__spend-icon">
-                  <i class="ri-map-pin-2-line"></i>
+                  <i className="ri-map-pin-2-line"></i>
                 </span>
                 <h6 className="spend__amount">{bien.zone.name}</h6>
                 <p className="spend__title">{getAdresse(bien)}</p>
@@ -93,7 +93,7 @@ export default function BienDetails ({bien, marketPart, key}) {
 
               <div className="box__04">
                 <span className="model__spend-icon">
-                  <i class="ri-hotel-line"></i>
+                  <i className="ri-hotel-line"></i>
                 </span>
                 <h6 className="spend__amount">{getSuperficie(bien)}</h6>
                 <p className="spend__title">{capitalizeOnlyFirstLetter(bien.description)}</p>
@@ -101,7 +101,7 @@ export default function BienDetails ({bien, marketPart, key}) {
 
               <div className="box__05">
                 <span className="model__spend-icon">
-                  <i class="ri-hotel-line"></i>
+                  <i className="ri-hotel-line"></i>
                 </span>
                 <h6 className="spend__amount">{getNbRooms(bien)} pièces</h6>
                 <p className="spend__title">{getRoomsDetails(bien)}</p>
