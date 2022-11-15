@@ -116,3 +116,29 @@
 .car__item:nth-child(4) .car__img img {
     width: 85%;
 }
+
+.white-text {
+    color: var(--heading-color);
+}
+
+.no-carac {
+    margin-top: 3rem;
+    display: flex;
+    justify-content: center;
+}
+
+
+/* Make .carac-step a grid with 2 elements per row */
+
+.carac-step {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: 3rem;
+    row-gap: 1.5rem;
+}
+
+.carac-step .form__group {
+    display: flex;
+    justify-content: center;
+    /* gap: 10px; */
+}

@@ -8,41 +8,63 @@ const conditionalPrinting = (data, kvObject, defaultText="") => {
   return allKeys.some(el => el == data) ? kvObject[String(data)] : defaultText;
 }
 
+const DEFAULT_CARACS = [
+{
+    "name": "adresse",
+    "slug": "adresse",
+    "format": "String",
+    "required": 0
+},
+{
+  "name": "superficie",
+  "slug": "superficie",
+  "format": "Numerique",
+  "required": 0
+},
+{
+  "name": "nombre de chambres",
+  "slug": "nombre_de_chambres",
+  "format": "Numerique",
+  "required": 0
+},
+{
+  "name": "nombre de salon",
+  "slug": "nombre_de_salon",
+  "format": "Numerique",
+  "required": 0
+},
+{
+  "name": "nombre de cuisine",
+  "slug": "nombre_de_cuisine",
+  "format": "Numerique",
+  "required": 0
+},
+{
+  "name": "nombre de douche",
+  "slug": "nombre_de_douche",
+  "format": "Numerique",
+  "required": 0
+}];
+
 const NewBien = (props) => {
 
  const { biens } = props;
  const typesDeBiens = [...new Set(biens.map(b => b["typeofgood"]["name"] || "Autre"))];
 
  const [step, setStep] = useState(1);
- const [bienData, setBienData] = useState({})
+ const [bienData, setBienData] = useState({vente: 0, typeofgood: {name: "appartement"}});
  const [allBiensDeType, setAllBiensDeType] = useState(biens.filter(b => b["typeofgood"]["name"] === "appartement"));
- const [caracsAttendues, setCaracsAttendues] = useState([]);
+ const [caracsAttendues, setCaracsAttendues] = useState(DEFAULT_CARACS);
 
- const handleSelectTypeDeBien = (e) => {
-    const typeDeBien = e.target.value;
-    const bdt = biens.filter(b => b["typeofgood"]["name"] === typeDeBien);
-    setAllBiensDeType(bdt);
 
-    console.log(bdt);
-    let uniqueCaracsNames = [...new Set(bdt.map(b => b["caracteristics"]["name"]))];
-
-    const expectedCaracs = uniqueCaracsNames.map(cn => {
-      const allWithCarac = bdt.filter(b => b["caracteristics"]["name"] === cn);
-      const lastWithCarac = allWithCarac[allWithCarac.length - 1]["caracteristics"];
-      return lastWithCarac.map(c => {
-        return {
-          name: c.name,
-          slug: c.slug,
-          format: c.format,
-          required: c.required === 0
-        }
-      })
-      .filter(el => ["superficie", "adresse"].every(ex => ex !== el.name));
-    });
-
-    console.log(expectedCaracs);
-    setCaracsAttendues(expectedCaracs);
- }
+ const setObjectProperties = (obj, propsWithDotNotation, value) => {
+    if(!propsWithDotNotation.includes(".")) return {...obj, [propsWithDotNotation]: value};
+    const props = propsWithDotNotation.split(".");
+    const firstProp = props[0];
+    const restProps = props.slice(1).join(".");
+    const newObj = {...obj, [firstProp]: setObjectProperties(obj[firstProp] || {}, restProps, value)};
+    return newObj;
+  }
 
  const handleFormButtonClick = (e) => {
       e.preventDefault();
@@ -52,6 +74,53 @@ const NewBien = (props) => {
       } 
  }
 
+ const handleFormInputChange = (e, field) => {
+    const val = e.target.value;
+    setBienData(setObjectProperties(bienData, field, val));
+    console.log(bienData);
+ };
+
+ const handleSelectTypeDeBien = (e) => {
+  const typeDeBien = e.target.value;
+  const bdt = biens.filter(b => b["typeofgood"]["name"] === typeDeBien);
+  setAllBiensDeType(bdt);
+  setBienData(setObjectProperties(bienData, "typeofgood.name", typeDeBien));
+  console.log(bienData);
+  let uniqueCaracsNames = [...new Set(bdt.map(b => b["caracteristics"]["name"]))];
+
+  const expectedCaracs = uniqueCaracsNames.map(cn => {
+    const allWithCarac = bdt.filter(b => b["caracteristics"]["name"] === cn);
+    const lastWithCarac = allWithCarac[allWithCarac.length - 1]["caracteristics"];
+    return lastWithCarac.map(c => {
+      return {
+        name: c.name,
+        slug: c.slug,
+        format: c.format,
+        required: c.required === 0
+      }
+    })
+    .filter(el => ["superficie", "adresse"].every(ex => ex !== el.name));
+  });
+  setCaracsAttendues(expectedCaracs[0] || []);
+}
+
+const handleSelectTypeContrat = (e) => {
+  let typeContrat = e.target.value;
+  console.log(typeContrat);
+  typeContrat = typeContrat === "location" ? 0 : 1;
+  setBienData(setObjectProperties(bienData, "vente", typeContrat));
+}
+
+const handleUpdateCarac = (e, carac) => {
+  const { val } = e.target.value;
+  let actualCaracs = bienData["caracteristics"] || [];
+  const thisCaracObj = DEFAULT_CARACS.find(c => c.slug === carac);
+  if(!thisCaracObj) return;
+  const thisObjVal = setObjectProperties(thisCaracObj, "pivot.value", val);
+  actualCaracs = actualCaracs.filter(c => c.slug !== carac);
+  actualCaracs.push(thisObjVal);
+  setBienData(setObjectProperties(bienData, "caracteristics", actualCaracs));
+}
 
   return (
     <div className="settings">
@@ -76,12 +145,20 @@ const NewBien = (props) => {
                 <div className="form__group">
                 <div>
                   <label>Intitulé du bien</label>
-                  <input type="text" placeholder="Appartements Johnson" required />
+                  <input type="text" 
+                         placeholder="Appartements Johnson" 
+                         onChange={(e) => handleFormInputChange(e, "name")}
+                         value={bienData.name || ""}
+                         required />
                 </div>
   
                 <div>
                   <label>Description</label>
-                  <textarea rows="2" placeholder="Petit appartement chic" required>
+                  <textarea rows="2" 
+                            placeholder="Petit appartement chic"
+                            onChange={(e) => handleFormInputChange(e, "description")}
+                            value={bienData.description || ""}
+                            required>
                     </textarea>
                 </div>
               </div>
@@ -106,19 +183,27 @@ const NewBien = (props) => {
   
                 <div>
                   <label>Localité</label>
-                  <input type="text" placeholder="Douala" required />
+                  <input type="text"
+                        placeholder="Douala"
+                        onChange={(e) => handleFormInputChange(e, "zone.name")}
+                        value={bienData?.zone?.name || ""}
+                        required />
                 </div>
   
                 <div>
                   <label>Adresse / Quartier</label>
-                  <input type="text" placeholder="Carrefour Logpom" required />
+                  <input type="text" 
+                         placeholder="Carrefour Logpom"
+                         onChange={(e) => handleUpdateCarac(e, "adresse")}
+                         required />
                 </div>
               </div>
   
               <div className="form__group">
                 <div>
                   <label>Type de contrat</label>
-                  <select defaultValue="location">
+                  <select defaultValue="location" 
+                          onChange={handleSelectTypeContrat}>
                     <option value="location">À Louer</option>
                     <option value="vente">À Vendre</option>
                   </select>
@@ -126,53 +211,77 @@ const NewBien = (props) => {
   
                 <div>
                   <label>Superficie (m²)</label>
-                  <input type="number" placeholder="300" step="5" required />
+                  <input type="number"
+                          placeholder="300" 
+                          step="5"
+                          value={bienData.caracteristics?.find(c => c.slug === "superficie")?.pivot?.value || ""}
+                          onChange={(e) => handleUpdateCarac(e, "superficie")}
+                          required />
                 </div>
   
                 <div>
                   <label>Prix (F CFA)</label>
-                  <input type="number" placeholder="100000" step="5000" required />
+                  <input type="number"
+                         placeholder=""
+                         step="1000"
+                         min="5000"
+                         value={bienData.price || "5000"}
+                         onChange={(e) => handleFormInputChange(e, "price")} 
+                         required />
                 </div>
               </div>
-  
-                </>
+              </>
               )
             }
 
             {
               step === 2 && (
                 <>
-
+                <div className="carac-step">
                 {
-                  caracsAttendues.length == 0 && (
-                    <div className="form__group">
-                        <p> Aucune caractéristique n'a été trouvée pour ce type de bien. Bien vouloir contacter l'administrateur. </p>
+                  caracsAttendues.length === 0 ? (
+                    <div className="form__group white-text no-carac">
+                        <p className="centered-text"> Aucune caractéristique n'a été trouvée pour ce type de bien. Veuillez contacter l'administrateur. </p>
                     </div>
                   )
-                }
-                {/* {
-                  caracsAttendues.length > 0 && (
-                    caracsAttendues.map((carac, index) => (
-                      <div className="form__group" key={index}>
+                  : ( caracsAttendues.map((carac, index) => (
+                    <div className="form__group" key={index}>
                         <div>
-                          <label>{capitalizeEveryWord(carac.name)}</label>
-                          { carac.required && (
-                               { (carac.format === "Numerique") && (<input type="number" placeholder="" required />)}
-                               { (carac.format === "String") && (<input type="text" placeholder="" required />)}
-                          )
-                          }
-
-                          { !carac.required && 
-                               { (carac.format === "Numerique") && (<input type="number" placeholder="" />)}
-                               { (carac.format === "String") && (<input type="text" placeholder="" />)}
-                          }
-                          </div>
-                      </div>     
-                    )
-                 ) 
+                        <label>{capitalizeEveryWord(carac.name).replace("Nombre De Cuisine", "Nombre De Cuisines")
+                                                               .replace("Nombre De Salon", "Nombre De Salons")
+                                                               .replace("Nombre De Douche", "Nombre De Douches")}
+                        </label>
+                        { carac.required ? (
+                             carac.format === "Numerique" ? 
+                                (<input type="number" 
+                                        name={carac.slug} 
+                                        value="1"
+                                        onChange={(e) => handleUpdateCarac(e, carac.slug)}
+                                        required />) 
+                              : (<input type="text"
+                                        name={carac.slug}
+                                        onChange={(e) => handleUpdateCarac(e, carac.slug)}
+                                        required />)
+                          ) : (
+                            carac.format === "Numerique" ? 
+                                (<input type="number"
+                                        name={carac.slug}
+                                        value="1"
+                                        onChange={(e) => handleUpdateCarac(e, carac.slug)}
+                                  />) 
+                              : (<input type="text" 
+                                        name={carac.slug}
+                                        placeholder=""
+                                        onChange={(e) => handleUpdateCarac(e, carac.slug)}
+                                />)
+                            )
+                        }
+                        </div>
+                    </div>     
                   )
-                } */}
-                
+                  ))
+                }
+                </div>
                 </>
               )
             }
