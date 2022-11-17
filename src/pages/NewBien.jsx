@@ -46,15 +46,17 @@ const DEFAULT_CARACS = [
   "required": 0
 }];
 
+const DEFAULT_CARACS_ATTENDUES = DEFAULT_CARACS.filter(el => ["superficie", "adresse"].every(ex => ex !== el.name));
+
 const NewBien = (props) => {
 
  const { biens } = props;
  const typesDeBiens = [...new Set(biens.map(b => b["typeofgood"]["name"] || "Autre"))];
 
  const [step, setStep] = useState(1);
- const [bienData, setBienData] = useState({vente: 0, typeofgood: {name: "appartement"}});
+ const [bienData, setBienData] = useState({vente: 0, typeofgood: {name: "appartement"}, caracteristics: []});
  const [allBiensDeType, setAllBiensDeType] = useState(biens.filter(b => b["typeofgood"]["name"] === "appartement"));
- const [caracsAttendues, setCaracsAttendues] = useState(DEFAULT_CARACS);
+ const [caracsAttendues, setCaracsAttendues] = useState(DEFAULT_CARACS_ATTENDUES);
 
 
  const setObjectProperties = (obj, propsWithDotNotation, value) => {
@@ -112,14 +114,20 @@ const handleSelectTypeContrat = (e) => {
 }
 
 const handleUpdateCarac = (e, carac) => {
-  const { val } = e.target.value;
+  const val = e.target.value;
   let actualCaracs = bienData["caracteristics"] || [];
   const thisCaracObj = DEFAULT_CARACS.find(c => c.slug === carac);
   if(!thisCaracObj) return;
   const thisObjVal = setObjectProperties(thisCaracObj, "pivot.value", val);
   actualCaracs = actualCaracs.filter(c => c.slug !== carac);
   actualCaracs.push(thisObjVal);
-  setBienData(setObjectProperties(bienData, "caracteristics", actualCaracs));
+  const thisFormat = thisObjVal.format;
+  if(thisFormat === "Numerique")
+    setBienData(setObjectProperties(bienData, "caracteristics", Number(actualCaracs)));
+  else
+    setBienData(setObjectProperties(bienData, "caracteristics", actualCaracs));
+
+  console.log(bienData.caracteristics);
 }
 
   return (
@@ -194,6 +202,7 @@ const handleUpdateCarac = (e, carac) => {
                   <label>Adresse / Quartier</label>
                   <input type="text" 
                          placeholder="Carrefour Logpom"
+                         value={(bienData || []).caracteristics?.find(c => c.slug === "adresse")?.pivot.value || ""}
                          onChange={(e) => handleUpdateCarac(e, "adresse")}
                          required />
                 </div>
@@ -214,7 +223,7 @@ const handleUpdateCarac = (e, carac) => {
                   <input type="number"
                           placeholder="300" 
                           step="5"
-                          value={bienData.caracteristics?.find(c => c.slug === "superficie")?.pivot?.value || ""}
+                          value={((bienData.caracteristics || []) || []).find(c => c.slug === "superficie")?.pivot.value || "0"}
                           onChange={(e) => handleUpdateCarac(e, "superficie")}
                           required />
                 </div>
@@ -255,24 +264,26 @@ const handleUpdateCarac = (e, carac) => {
                              carac.format === "Numerique" ? 
                                 (<input type="number" 
                                         name={carac.slug} 
-                                        value="1"
-                                        onChange={(e) => handleUpdateCarac(e, carac.slug)}
+                                        value={bienData.caracteristics?.find(c => c.slug === carac.slug)?.pivot.value || 1}
+                                        onChange={(e) => handleUpdateCarac(e, (carac.slug || ""))}
                                         required />) 
                               : (<input type="text"
                                         name={carac.slug}
-                                        onChange={(e) => handleUpdateCarac(e, carac.slug)}
+                                        value={bienData.caracteristics?.find(c => c.slug === carac.slug)?.pivot.value || ""}
+                                        onChange={(e) => handleUpdateCarac(e, (carac.slug || ""))}
                                         required />)
                           ) : (
                             carac.format === "Numerique" ? 
                                 (<input type="number"
                                         name={carac.slug}
-                                        value="1"
-                                        onChange={(e) => handleUpdateCarac(e, carac.slug)}
+                                        value={bienData.caracteristics?.find(c => c.slug === carac.slug)?.pivot.value || 1}
+                                        onChange={(e) => handleUpdateCarac(e, (carac.slug || ""))}
                                   />) 
                               : (<input type="text" 
                                         name={carac.slug}
+                                        value={bienData.caracteristics?.find(c => c.slug === carac.slug)?.pivot.value || ""}
                                         placeholder=""
-                                        onChange={(e) => handleUpdateCarac(e, carac.slug)}
+                                        onChange={(e) => handleUpdateCarac(e, (carac.slug || ""))}
                                 />)
                             )
                         }
