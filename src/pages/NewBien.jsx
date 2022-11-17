@@ -115,18 +115,15 @@ const handleSelectTypeContrat = (e) => {
 
 const handleUpdateCarac = (e, carac) => {
   const val = e.target.value;
-  let actualCaracs = bienData["caracteristics"] || [];
+  let actualCaracs = bienData.caracteristics || [];
+  // console.log(actualCaracs);
   const thisCaracObj = DEFAULT_CARACS.find(c => c.slug === carac);
   if(!thisCaracObj) return;
   const thisObjVal = setObjectProperties(thisCaracObj, "pivot.value", val);
   actualCaracs = actualCaracs.filter(c => c.slug !== carac);
   actualCaracs.push(thisObjVal);
   const thisFormat = thisObjVal.format;
-  if(thisFormat === "Numerique")
-    setBienData(setObjectProperties(bienData, "caracteristics", Number(actualCaracs)));
-  else
-    setBienData(setObjectProperties(bienData, "caracteristics", actualCaracs));
-
+  setBienData(setObjectProperties(bienData, "caracteristics", actualCaracs));
   console.log(bienData.caracteristics);
 }
 
@@ -223,7 +220,7 @@ const handleUpdateCarac = (e, carac) => {
                   <input type="number"
                           placeholder="300" 
                           step="5"
-                          value={((bienData.caracteristics || []) || []).find(c => c.slug === "superficie")?.pivot.value || "0"}
+                          value={(bienData || []).caracteristics?.find(c => c.slug === "superficie")?.pivot.value || 0}
                           onChange={(e) => handleUpdateCarac(e, "superficie")}
                           required />
                 </div>

@@ -73,7 +73,7 @@ export default function BienDetails ({bien, marketPart, key}) {
                     value={percentage}
                     text={`${percentage}%`}
                     styles={buildStyles({
-                      pathColor: "#01d293",
+                      pathColor: "#d79b28",
                       textColor: "#fff",
                       trailColor: "#0b0c28",
                       textSize: "15px",
